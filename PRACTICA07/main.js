@@ -1,67 +1,63 @@
-// Arreglo en memoria para almacenar los turnos
-let turnos = [];
-
-// Función para mostrar la sección seleccionada
-function mostrarSeccion(seccion) {
-    document.querySelectorAll('section').forEach((sec) => {
-        sec.classList.remove('active');
+// Arreglo en memoria para turnos
+let turnos = [
+    { id: '1', fecha: '2024-10-30', hora: '10:00', cliente: 'Cliente 1' },
+    { id: '2', fecha: '2024-10-31', hora: '11:00', cliente: 'Cliente 2' },
+  ];
+  
+  // Alternar entre secciones
+  function mostrarSeccion(seccion) {
+    document.querySelectorAll('section').forEach(sec => sec.style.display = 'none');
+    document.getElementById(seccion).style.display = 'block';
+  }
+  
+  // Cargar datos en tablas
+  function cargarTablaTurnos() {
+    const tablaTurnos = document.getElementById('tablaTurnos');
+    tablaTurnos.innerHTML = '';
+    turnos.forEach(turno => {
+      const fila = `<tr><td>${turno.id}</td><td>${turno.fecha}</td><td>${turno.hora}</td><td>${turno.cliente}</td></tr>`;
+      tablaTurnos.insertAdjacentHTML('beforeend', fila);
     });
-    document.getElementById(seccion).classList.add('active');
-
-    if (seccion === 'inicio') {
-        mostrarTurnosPorCliente();
-    } else if (seccion === 'consultar') {
-        mostrarTodosLosTurnos();
+  }
+  
+  function cargarTablaClientes() {
+    const clientes = {};
+    turnos.forEach(turno => {
+      clientes[turno.cliente] = (clientes[turno.cliente] || 0) + 1;
+    });
+  
+    const tablaClientes = document.getElementById('tablaClientes');
+    tablaClientes.innerHTML = '';
+    for (let cliente in clientes) {
+      const fila = `<tr><td>${cliente}</td><td>${clientes[cliente]}</td></tr>`;
+      tablaClientes.insertAdjacentHTML('beforeend', fila);
     }
-}
-
-// Función para agregar un nuevo turno
-function agregarTurno(event) {
+  }
+  
+  // Registrar turno
+  function registrarTurno(event) {
     event.preventDefault();
-    const cliente = document.getElementById('cliente').value;
+    const id = document.getElementById('id').value;
     const fecha = document.getElementById('fecha').value;
     const hora = document.getElementById('hora').value;
-
-    // Validación de datos completos
-    if (cliente && fecha && hora) {
-        const id = turnos.length + 1;
-        turnos.push({ id, cliente, fecha, hora });
-        alert('Turno agregado correctamente.');
-        
-        // Limpiar el formulario
-        document.getElementById('cliente').value = '';
-        document.getElementById('fecha').value = '';
-        document.getElementById('hora').value = '';
+    const cliente = document.getElementById('cliente').value;
+  
+    // Validación básica
+    if (id && fecha && hora && cliente) {
+      turnos.push({ id, fecha, hora, cliente });
+      cargarTablaTurnos();
+      cargarTablaClientes();
+      alert('Turno registrado exitosamente!');
+      document.getElementById('formTurno').reset();
     } else {
-        alert('Complete todos los campos.');
+      alert('Por favor completa todos los campos.');
     }
-}
-
-// Función para mostrar el total de turnos por cliente en el Dashboard
-function mostrarTurnosPorCliente() {
-    const conteoClientes = {};
-    turnos.forEach(turno => {
-        conteoClientes[turno.cliente] = (conteoClientes[turno.cliente] || 0) + 1;
-    });
-
-    const tbody = document.getElementById('tablaTurnosCliente').getElementsByTagName('tbody')[0];
-    tbody.innerHTML = '';
-    for (const cliente in conteoClientes) {
-        const row = tbody.insertRow();
-        row.insertCell(0).textContent = cliente;
-        row.insertCell(1).textContent = conteoClientes[cliente];
-    }
-}
-
-// Función para mostrar todos los turnos en la sección "Consultar turnos"
-function mostrarTodosLosTurnos() {
-    const tbody = document.getElementById('tablaTurnos').getElementsByTagName('tbody')[0];
-    tbody.innerHTML = '';
-    turnos.forEach(turno => {
-        const row = tbody.insertRow();
-        row.insertCell(0).textContent = turno.id;
-        row.insertCell(1).textContent = turno.cliente;
-        row.insertCell(2).textContent = turno.fecha;
-        row.insertCell(3).textContent = turno.hora;
-    });
-}
+  }
+  
+  // Inicializar
+  document.addEventListener('DOMContentLoaded', () => {
+    mostrarSeccion('inicio');
+    cargarTablaTurnos();
+    cargarTablaClientes();
+  });
+  
