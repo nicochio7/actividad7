@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Turnos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Gestión de Turnos</h2>
+        <a href="#" onclick="mostrarSeccion('inicio')">Inicio</a>
+        <a href="#" onclick="mostrarSeccion('consultar')">Consultar turnos</a>
+        <a href="#" onclick="mostrarSeccion('nuevo')">Nuevo turno</a>
+    </div>
+    <div class="content">
+        <section id="inicio" class="active">
+            <h1>DASHBOARD</h1>
+            <h2>Total de turnos por cliente:</h2>
+            <table id="tablaTurnosCliente">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Total Turnos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="consultar">
+            <h1>Consulta de Turnos</h1>
+            <table id="tablaTurnos">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                    </tr>
+                </thead>
+                
+            </table>
+        </section>
+
+        <section id="nuevo">
+            <h1>Nuevo Turno</h1>
+            <form onsubmit="agregarTurno(event)">
+                <label for="cliente">Cliente:</label>
+                <select id="cliente" required>
+                    <option value="">Seleccione un cliente</option>
+                    <option value="Cliente 1">Cliente 1</option>
+                    <option value="Cliente 2">Cliente 2</option>
+                </select><br><br>
+
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" required><br><br>
+
+                <label for="hora">Hora:</label>
+                <input type="time" id="hora" required><br><br>
+
+                <button type="submit">Agregar Turno</button>
+            </form>
+        </section>
+    </div>
+
+    <script src="main.HTML"></script>
+</body>
+</html>
